@@ -9,51 +9,51 @@ f = open('q1in')
 def read1k():
     return f.read(1024)
 
-#worker method
+#worker methods
 def stringToASCIIBinary(input_string):  
     for x in input_string:
         #convert to ASCII, then format as binary
         yield format(ord(x), 'b')
+        
+def concatListToEndOfString(stringRef, listRef):  
+    for i in range(len(listRef)):
+        stringRef+=listRef[i]
+    return stringRef
 
 inputStream=''
 numStuffedBits = 0
 consecutiveOnes = 0
-binaryLength=0
 outputStream=''
 
 #convert data to binary
 for stream in iter(read1k, ''):
     for binary in iter( stringToASCIIBinary(stream) ):
         
-        #check for 5 consecutive 1's
         inputStream+=binary
-        binaryLength=len(binary)
-        B = list()
+        
+        #check for 5 consecutive 1's
+        B = list(binary)
+        binaryLength = len(binary)
         for i in range(binaryLength):
-            if binary[i] is 1:
+            if B[i] is '1':
                 if consecutiveOnes is 4:
                     #this is fifth, so bit stuff after it
-                    
-                    #lazy create list to better handle multiple insertions
-                    if len(B) < 1:
-                        B=list(binary)
-                    #bit stuff a zero
                     B.insert(i+1, '0')
                     numStuffedBits+=1
-                    #reset counter
+                    #increase length for scanning since we inserted
+                    binaryLength+=1
+                    #reset ones counter
                     consecutiveOnes=0
                 else:
                     consecutiveOnes+=1
             else:
                 consecutiveOnes=0
-        #done looking at binary for this char
-        outputStream+=B.__str__()
+        #done working on binary for this char
+        outputStream=concatListToEndOfString(outputStream, B)
 
-total = binaryLength + numStuffedBits
-
-print 'Initial bits: ' + len
-print 'Input Binary Stream: ' + inputStream
-print 'Stuffed bits: ' + numStuffedBits
-print 'Total bits: ' + total
-print 'Output Binary Stream' + outputStream
-print 'Radio stuffed/total' + (numStuffedBits/total)
+print 'Initial bits: ' + str(len(inputStream))
+print 'Input Binary Stream: ' + str(inputStream)
+print 'Stuffed bits: ' + str(numStuffedBits)
+print 'Total bits: ' + str(len(inputStream))
+print 'Output Binary Stream:' + outputStream
+print 'Radio stuffed/total: ' + "%.3g" % ( float(numStuffedBits) / len(outputStream) )
