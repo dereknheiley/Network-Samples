@@ -5,15 +5,16 @@ Created on Oct 18, 2013
 @author: Derek Neil B00163969
 '''
 
-#worker method
-def stringToASCIIBinary(input_string):  
-    for x in input_string:
-        yield format(ord(x), 'b')
-
 #read text file
 f = open('q1in')
 def read1k():
     return f.read(1024)
+
+#worker method
+def stringToASCIIBinary(input_string):  
+    for x in input_string:
+        #convert to ASCII, then format as binary
+        yield format(ord(x), 'b')
 
 last=''
 NRZ=''
