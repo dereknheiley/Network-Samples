@@ -6,7 +6,7 @@ Created on Oct 20, 2013
 
 #assumes binary inputs and shifted m'x
 def bitwiseDivision(gx, mx):
-    rx =0b0
+    rx = 0
     #divide (XOR) mx by gx
     
     return rx
@@ -14,7 +14,9 @@ def bitwiseDivision(gx, mx):
 #assumes binary input gx
 def binaryOrderOf(gx):
     order = 0
-    
+    while gx > 1:
+        order+=1
+        gx = gx >> 1
     return order
 
 #assumes binary inputs and unshifted mx
@@ -23,7 +25,7 @@ def CRC(gx, mx):
     order = binaryOrderOf(gx)
     
     #bitshift mx by order of gx
-    mx << order
+    mx = mx << order
     
     #calculate rx
     rx = bitwiseDivision(gx, mx)
@@ -39,26 +41,24 @@ def unCRC(gx, received):
     order = binaryOrderOf(gx)
     
     #reverse bitshift received by order of gx
-    mx >> order
+    mx = received >> order
     
     #divide received by gx
     rx = bitwiseDivision(gx, received)
-    check=1
-    if not rx is 0:
-        check=0
+    check=0
+    if rx is 0:
+        check=1
     return check, mx 
     
-gx = 0b1011 #1011
-mx = 0b110100111101 #110100111101
+gx = 0b1011
+mx = 0b110100111101
+print 'G(x) ' + format(gx, 'b')
+print 'M(x) ' + format(mx, 'b')
 
 rx, dataToSend = CRC(gx, mx)
+print 'R(x) ' + format(rx, 'b')
+print 'dataToSend ' + format(dataToSend, 'b')
 
 check, RTmx = unCRC(gx, dataToSend)
-
-print 'G(x) ' + str(gx)
-print 'M(x) ' + str(mx)
-print 'R(x) ' + str(rx)
-print 'dataToSend ' + str(dataToSend)
-print 'check ' + str(check)
-print 'M(X) ' + str(RTmx)
-
+print 'check ' + (['failed', 'passed'][check])
+print 'M\'(X) ' + format(RTmx, 'b')
