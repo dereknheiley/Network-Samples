@@ -54,6 +54,6 @@ for stream in iter(read1k, ''):
 print 'Initial bits: ' + str(len(inputStream))
 print 'Input Binary Stream: ' + str(inputStream)
 print 'Stuffed bits: ' + str(numStuffedBits)
-print 'Total bits: ' + str(len(inputStream))
+print 'Total bits: ' + str(len(outputStream))
 print 'Output Binary Stream:' + outputStream
-print 'Radio stuffed/total: ' + "%.3g" % ( float(numStuffedBits) / len(outputStream) )
+print 'Ratio stuffed/total: ' + "%.3g" % ( float(numStuffedBits) / len(outputStream) )
