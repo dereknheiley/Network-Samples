@@ -12,19 +12,17 @@ def bitwiseDivision(gx, mx):
         
     else:#divide (XOR) m'x by gx
         rx = 1
-        #get first ordergx bits from m'x
         mxstr = format(mx, 'b')
-        mxLen = len(mxstr)
-        lastShift = mxLen -1
+        mxstr = mxstr[1:]
+        #get first ordergx bits from m'x
         for i in range(1,ordergx+1): 
             #build rx
             rx = rx << 1
-            newbit = int(mxstr[i])
+            newbit = int(mxstr[0])
             rx = rx | newbit
             
             #trim m'x
-            mx = mx ^ (1<< mxLen-i)
-            lastShift-=1
+            mxstr = mxstr[1:]
             
         #XOR division
         rx = rx ^ gx
@@ -32,23 +30,19 @@ def bitwiseDivision(gx, mx):
         #continue until can't divide again
         while ordergx < binaryOrderOf(mx):
             #get next rx
-            mxstr = format(mx, 'b')
-            mxLen = len(mxstr)
-            i = 0
-            while i < mxLen and binaryOrderOf(rx) < ordergx:
+            while len(mxstr)>0 and binaryOrderOf(rx) < ordergx:
                 #build rx
                 rx = rx << 1
-                rx = rx & int(mxstr[i])
+                rx = rx | int(mxstr[0])
                 
                 #trim m'x
-                mx = mx ^ ( 1<< mxLen-(i+1) )
-                lastShift-=1
-                i+=1
+                mxstr = mxstr[1:]
             #XOR division 
             rx = rx ^ gx
         
         #bitshift remaining number of remaining 0's left in m'x
-        rx = rx << lastShift
+        if len(mxstr) >0:
+            rx = rx << len(mxstr)
         
     return rx
 
@@ -91,7 +85,7 @@ def unCRC(gx, received):
         check=1
     return check, mx 
     
-gx = 0b1011
+gx = 0b1101
 mx = 0b110100111101
 print 'G(x) ' + format(gx, 'b')
 print 'M(x) ' + format(mx, 'b')
