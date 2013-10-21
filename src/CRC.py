@@ -46,6 +46,10 @@ def bitwiseDivision(gx, mx):
     else:#divide (XOR) m'x by gx
         rx = 1
         mxstr = format(mx, 'b')
+        # would be more efficient to convert directly
+        # from int to binary bit values in linked-list
+        # but no built in linked list type, and not worth
+        # time to implement or install for assignment
         mxstr = mxstr[1:]
         
         #consume m'x
