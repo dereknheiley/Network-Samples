@@ -28,7 +28,7 @@ def bitwiseDivision(gx, mx):
         rx = rx ^ gx
         
         #continue until can't divide again
-        while ordergx < len(mxstr):
+        while len(mxstr)>0:
             #get next rx
             while len(mxstr)>0 and binaryOrderOf(rx) < ordergx:
                 #build rx
