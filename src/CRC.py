@@ -11,17 +11,19 @@ def bitwiseDivision(gx, mx):
         rx=-1
         
     else:#divide (XOR) m'x by gx
-        
+        rx = 1
         #get first ordergx bits from m'x
         mxstr = format(mx, 'b')
-        lastShift = mxLen = len(mxstr)
-        for i in range(ordergx-1): 
+        mxLen = len(mxstr)
+        lastShift = mxLen -1
+        for i in range(1,ordergx+1): 
             #build rx
             rx = rx << 1
-            rx = rx & int(mxstr[i])
+            newbit = int(mxstr[i])
+            rx = rx | newbit
             
             #trim m'x
-            mx = mx ^ (1<< mxLen-(i+1))
+            mx = mx ^ (1<< mxLen-i)
             lastShift-=1
             
         #XOR division
