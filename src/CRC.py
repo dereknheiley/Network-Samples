@@ -15,7 +15,7 @@ def bitwiseDivision(gx, mx):
         mxstr = format(mx, 'b')
         mxstr = mxstr[1:]
         #get first ordergx bits from m'x
-        for i in range(1,ordergx+1): 
+        for i in range(ordergx): 
             #build rx
             rx = rx << 1
             newbit = int(mxstr[0])
@@ -28,12 +28,13 @@ def bitwiseDivision(gx, mx):
         rx = rx ^ gx
         
         #continue until can't divide again
-        while ordergx < binaryOrderOf(mx):
+        while ordergx < len(mxstr):
             #get next rx
             while len(mxstr)>0 and binaryOrderOf(rx) < ordergx:
                 #build rx
                 rx = rx << 1
-                rx = rx | int(mxstr[0])
+                newbit = int(mxstr[0])
+                rx = rx | newbit
                 
                 #trim m'x
                 mxstr = mxstr[1:]
