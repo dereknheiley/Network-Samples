@@ -6,9 +6,48 @@ Created on Oct 20, 2013
 
 #assumes binary inputs and shifted m'x
 def bitwiseDivision(gx, mx):
-    rx = 0
-    #divide (XOR) mx by gx
-    
+    ordergx = binaryOrderOf(gx)
+    if ordergx > binaryOrderOf(mx): #incorrect mx input
+        rx=-1
+        
+    else:#divide (XOR) m'x by gx
+        
+        #get first ordergx bits from m'x
+        mxstr = format(mx, 'b')
+        lastShift = mxLen = len(mxstr)
+        for i in range(ordergx-1): 
+            #build rx
+            rx = rx << 1
+            rx = rx & int(mxstr[i])
+            
+            #trim m'x
+            mx = mx ^ (1<< mxLen-(i+1))
+            lastShift-=1
+            
+        #XOR division
+        rx = rx ^ gx
+        
+        #continue until can't divide again
+        while ordergx < binaryOrderOf(mx):
+            #get next rx
+            mxstr = format(mx, 'b')
+            mxLen = len(mxstr)
+            i = 0
+            while i < mxLen and binaryOrderOf(rx) < ordergx:
+                #build rx
+                rx = rx << 1
+                rx = rx & int(mxstr[i])
+                
+                #trim m'x
+                mx = mx ^ ( 1<< mxLen-(i+1) )
+                lastShift-=1
+                i+=1
+            #XOR division 
+            rx = rx ^ gx
+        
+        #bitshift remaining number of remaining 0's left in m'x
+        rx = rx << lastShift
+        
     return rx
 
 #assumes binary input gx
