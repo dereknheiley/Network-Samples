@@ -38,8 +38,9 @@ def bitwiseDivision(gx, mx):
                 
                 #trim m'x
                 mxstr = mxstr[1:]
-            #XOR division 
-            rx = rx ^ gx
+            #XOR division
+            if binaryOrderOf(rx) is ordergx:
+                rx = rx ^ gx
         
         #bitshift remaining number of remaining 0's left in m'x
         if len(mxstr) >0:
@@ -86,7 +87,7 @@ def unCRC(gx, received):
         check=1
     return check, mx 
     
-gx = 0b1101
+gx = 0b1011
 mx = 0b110100111101
 print 'G(x) ' + format(gx, 'b')
 print 'M(x) ' + format(mx, 'b')
