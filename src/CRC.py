@@ -77,7 +77,13 @@ def binaryOrderOf(gx):
         gx = gx >> 1
     return order
 
-
+#worker method
+def stringToASCIIBinary(input_string):  
+    for x in input_string:
+        #convert to ASCII, then format as binary
+        yield format(ord(x), 'b')
+        
+        
 print 'demo'
 gx = 0b1101
 mx = 0b110100111101
@@ -90,7 +96,30 @@ print 'dataToSend ' + format(dataToSend, 'b')
 
 check, RTmx = unCRC(gx, dataToSend)
 print 'check ' + (['failed', 'passed'][check])
-print 'M\'(X) ' + format(RTmx, 'b')
+if check:
+    print 'M(X) ' + format(RTmx, 'b')
+
+
+print '\ndemo2'
+gx = 0b1101
+msg = 'Hi'
+bitStream = ''
+#convert msg to binary
+for binary in iter( stringToASCIIBinary(msg) ):
+    bitStream+=binary
+mx = int(bitStream) #convert message to ASCII numbers
+print 'G(x) ' + format(gx, 'b')
+print 'Message ' + msg
+print 'M(x) ' + format(mx, 'b')
+
+rx, dataToSend = CRC(gx, mx)
+print 'R(x) ' + format(rx, 'b')
+print 'dataToSend ' + format(dataToSend, 'b')
+
+check, RTmx = unCRC(gx, dataToSend)
+print 'check ' + (['failed', 'passed'][check])
+if check:
+    print 'M(X) ' + format(RTmx, 'b')
 
 
 print '\na)'
@@ -105,19 +134,17 @@ print 'dataToSend ' + format(dataToSend, 'b')
 
 check, RTmx = unCRC(gx, dataToSend)
 print 'check ' + (['failed', 'passed'][check])
-print 'M\'(X) ' + format(RTmx, 'b')
+if check:
+    print 'M(X) ' + format(RTmx, 'b')
 
 
 print '\nb)'
 gx = 0b1001
-mx = 0b10110011101
+px = 0b10110011101
 print 'G(x) ' + format(gx, 'b')
-print 'M(x) ' + format(mx, 'b')
+print 'P(x) ' + format(px, 'b')
 
-rx, dataToSend = CRC(gx, mx)
-print 'R(x) ' + format(rx, 'b')
-print 'dataToSend ' + format(dataToSend, 'b')
-
-check, RTmx = unCRC(gx, dataToSend)
+check, RTmx = unCRC(gx, px)
 print 'check ' + (['failed', 'passed'][check])
-print 'M\'(X) ' + format(RTmx, 'b')
+if check:
+    print 'M(X) ' + format(RTmx, 'b')
